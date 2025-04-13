@@ -2,6 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const folderPath = process.argv[2] || '.'
 
+
+
+const allFiles = fs.readdirSync(folderPath);
+
+
+
 const fileCategories = {
     images: ['jpg', 'png', 'gif'],
     documents: ['pdf', 'docx', 'txt'],
@@ -10,30 +16,42 @@ const fileCategories = {
     others: []
 }
 
+let folderCreation = [];
 
-const folderNames = Object.keys(fileCategories);
+for (const file of allFiles) {
+    const fileExtension = path.extname(file).slice(1).toLowerCase(); 
 
-
-for (let i = 0; i < folderNames.length; i++) {
-    //exact folder path
-    const completePath = path.join(folderPath, folderNames[i]);
-
-    if (!fs.existsSync(completePath)) {
-        fs.mkdirSync(completePath);
-        
-        console.log(`Creating folder: ${completePath}`);
-    } 
+    if (fileCategories.images.includes(fileExtension)) {
+        folderCreation.push('images');
+    } else if (fileCategories.documents.includes(fileExtension)) {
+        folderCreation.push('documents');
+    } else if (fileCategories.videos.includes(fileExtension)) {
+        folderCreation.push('videos');
+    } else if (fileCategories.archives.includes(fileExtension)) {
+        folderCreation.push('archives');
+    } else {
+        folderCreation.push('others');
+    }
 }
 
 
+for (const folder of folderCreation) {
+    const completePath = path.join(folderPath, folder);
 
-const allFiles = fs.readdirSync(folderPath)
+    if (!fs.existsSync(completePath)) {
+        fs.mkdirSync(completePath);
+        console.log(`Creating Folder: ${folder}`);
+    }
+}
+
+
 
 for (let i = 0; i < allFiles.length; i++) {
 
     const fileName = allFiles[i];
     const completePath = path.join(folderPath, fileName);
 
+    //File Exsist Check
     const isFile = fs.lstatSync(completePath).isFile();
 
     if (!isFile) continue;
