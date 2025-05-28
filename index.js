@@ -1,6 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const folderPath = process.argv[2] || '.'
+import fs from 'fs';
+import path from 'path';
+import chalk from 'chalk';
+
+
+const folderPath = process.argv[2] || '.'  //Gets the path of the directory as argument
 
 
 
@@ -16,21 +19,21 @@ const fileCategories = {
     others: []
 }
 
-let folderCreation = [];
+const folderCreation = new Set();
 
 for (const file of allFiles) {
-    const fileExtension = path.extname(file).slice(1).toLowerCase(); 
+    const fileExtension = path.extname(file).slice(1).toLowerCase();
 
     if (fileCategories.images.includes(fileExtension)) {
-        folderCreation.push('images');
+        folderCreation.add('images');
     } else if (fileCategories.documents.includes(fileExtension)) {
-        folderCreation.push('documents');
+        folderCreation.add('documents');
     } else if (fileCategories.videos.includes(fileExtension)) {
-        folderCreation.push('videos');
+        folderCreation.add('videos');
     } else if (fileCategories.archives.includes(fileExtension)) {
-        folderCreation.push('archives');
+        folderCreation.add('archives');
     } else {
-        folderCreation.push('others');
+        folderCreation.add('others');
     }
 }
 
@@ -40,7 +43,7 @@ for (const folder of folderCreation) {
 
     if (!fs.existsSync(completePath)) {
         fs.mkdirSync(completePath);
-        console.log(`Creating Folder: ${folder}`);
+        console.log(chalk.red(`Creating Folder: ${folder}`));
     }
 }
 

@@ -1,6 +1,7 @@
 {
   "name": "file-organizer",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/RobomrFox/File-Organizer/issues"
   },
-  "homepage": "https://github.com/RobomrFox/File-Organizer#readme"
+  "homepage": "https://github.com/RobomrFox/File-Organizer#readme",
+  "dependencies": {
+    "chalk": "^5.4.1"
+  }
 }
