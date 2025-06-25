@@ -43,7 +43,7 @@ for (const folder of folderCreation) {
 
     if (!fs.existsSync(completePath)) {
         fs.mkdirSync(completePath);
-        console.log(chalk.red(`Creating Folder: ${folder}`));
+        console.log(chalk.yellow(`Creating Folder: ${folder}`));
     }
 }
 
