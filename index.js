@@ -3,7 +3,46 @@ import path from 'path';
 import chalk from 'chalk';
 
 
-const folderPath = process.argv[2] || '.'  //Gets the path of the directory as argument
+let folderPath = null;
+
+// stdinp flags
+let doUndo = false;
+
+const argvs = process.argv.slice(2);
+
+for (const argv of args) {
+
+    let isPath = async function () {
+        if (typeof(argv) !== "string") {
+            return false;
+        } else if (argv.startsWith("-")) {
+            return false;
+        }
+
+        const stat = await fs.promises.stat(argv)
+
+        if (stat.isDirectory()) {
+            folderPath = argv;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if (argv.startsWith("-")) {
+        switch (argv) {
+            case "--undo" || "-u":
+                doUndo = true;
+                break;
+
+        }
+    } else {
+        return;
+    }
+}
+
+
+folderPath = process.argv[2] || '.'  //Gets the path of the directory as argument
 
 
 
@@ -67,7 +106,7 @@ for (let i = 0; i < allFiles.length; i++) {
     for (const category in fileCategories) {
         const extensions = fileCategories[category];
 
-        if (extensions.includes(fileExtension)){
+        if (extensions.includes(fileExtension)) {
             const destPath = path.join(folderPath, category, fileName)
             fs.renameSync(completePath, destPath);
             fileMoved = true;
