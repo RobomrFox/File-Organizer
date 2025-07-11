@@ -10,44 +10,44 @@ let doUndo = false;
 
 const argvs = process.argv.slice(2);
 
-for (const argv of args) {
 
-    let isPath = async function () {
-        if (typeof(argv) !== "string") {
-            return false;
-        } else if (argv.startsWith("-")) {
-            return false;
-        }
-
-        const stat = await fs.promises.stat(argv)
-
-        if (stat.isDirectory()) {
-            folderPath = argv;
-            return true;
-        } else {
-            return false;
-        }
+let isPath = function (path) {
+    if (typeof (path) !== "string") {
+        return false;
+    } else if (path.startsWith("-")) {
+        return false;
     }
 
-    if (argv.startsWith("-")) {
-        switch (argv) {
-            case "--undo" || "-u":
-                doUndo = true;
-                break;
+    const stat = fs.statSync(path);
 
-        }
+    if (stat.isDirectory()) {
+        folderPath = path;
+        return true;
     } else {
-        return;
+        return false;
     }
 }
 
 
-folderPath = process.argv[2] || '.'  //Gets the path of the directory as argument
+for (const argv of argvs) {
 
+    if (argv.startsWith("-")) {
+        if (argv === '--undo' || argv === '-u') {
+            doUndo = true;
+            continue;
+        }
+    } else if (!folderPath) {
+        isPath(argv);
+    } 
+}
+
+
+if (!folderPath) {
+    folderPath = '.';
+}
 
 
 const allFiles = fs.readdirSync(folderPath);
-
 
 
 const fileCategories = {
