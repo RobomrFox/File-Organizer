@@ -1,6 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import chalkAnimation from 'chalk-animation';
+import figlet from 'figlet';
+import { createSpinner } from 'nanospinner';
 
 
 let folderPath = null;
@@ -8,7 +11,26 @@ let folderPath = null;
 // stdinp flags
 let doUndo = false;
 
+
+// chalkAnimation.rainbow(`Welcome to File organizer`, 0.1);
+
 const argvs = process.argv.slice(2);
+
+const sleep = (ms = 2000) => {
+    new Promise((r) => {setTimeout(r, ms)});
+}
+
+const spinner = createSpinner('Whatcha doing?').start();
+await sleep();
+
+figlet("Hello World!", (err, data) => {
+    if (err) {
+        console.log("Something Went Wrong!");
+        console.log(err);
+        return;
+    } 
+    chalkAnimation.karaoke(data);
+});
 
 
 let isPath = function (path) {
